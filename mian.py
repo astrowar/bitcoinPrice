@@ -1,3 +1,5 @@
+ #https://blockchain.info/charts/market-price?scale=1
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
@@ -20,24 +22,31 @@ btc = [778, 774, 776, 781, 788, 788, 789, 793, 824, 860, 901, 891, 886, 897, 930
        4360, 4386, 4293, 4225, 4338, 4345, 4376, 4602, 4777, 4782, 4819, 5325, 5563, 5739, 5647, 5711, 5603, 5546, 5727,
        5979, 6020, 5983, 5876, 5505, 5669, 5893, 5772, 5776, 6155, 6105, 6388, 6665, 7068, 7197, 7437, 7377, 6989, 7092,
        7415, 7158, 6719, 6362, 5716, 6550, 6635, 7301, 7815, 7786, 7817, 8007, 8255, 8059, 8268, 8148, 8250, 8707, 9284,
-       9718, 9952, 9879, 10147, 10883, 11071, 11332, 11584, 11878, 13540, 16501, 16007, 15142, 14869, 16762]
+       9718, 9952, 9879, 10147, 10883, 11071, 11332, 11584, 11878, 13540, 16501, 16007, 15142, 14869, 16762,17276]
 
 
-def func(x, a, b ,c ,z , z2 , p , tc ,w  ):
-    if (tc <  0): return 0.0
+
+
+def func(x, a, b ,c ,z ,  z2,   tc ,w ,p ):
+    if (tc < 0): return 0.0 * x
     #return a + b * pow(( 370+tc-x),z) + c * pow(( 370+tc-x),z) * np.cos( np.log((370 + tc-x)) + p  )
-    return a + b * pow((370 + tc - x), z) + c * pow(( 370+tc-x),z2) * np.cos( 17.0* w * np.log((370 + tc-x)) + p  )
+    return a + b *  pow((  tc - x), z)  + c *  pow((  tc-x),z2) * np.sin( 12.0*  w *  np.log(  tc-x) +p  )
 
 
-xdata = np.array(list(range(0,len(btc))))
-ydata = np.log(np.array(btc))
-print( np.array([xdata,ydata]) )
+xdata = np.array(list(range(-len(btc),0)))
+#ydata = np.array(btc)
+ydata = (np.log(np.array(btc)) )
+#print( np.array([xdata,ydata]) )
+
 
 popt, pcov = curve_fit(func, xdata, ydata  )
 
 print(popt)
-plt.plot(xdata,  np.exp(ydata), 'b-', label='data')
+#plt.plot(xdata,  np.exp( ydata), 'b-', label='data')
+#plt.plot(xdata,   np.exp(func(xdata, *popt)), 'r-', label='fit')
 
-plt.plot(xdata,   np.exp(func(xdata, *popt)), 'r-', label='fit')
+plt.plot(xdata,   ( ydata), 'b-', label='data')
+
+plt.plot(xdata,  func(xdata, *popt), 'r-', label='fit')
 
 plt.show()
