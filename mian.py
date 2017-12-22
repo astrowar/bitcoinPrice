@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
+#valor do bitcoin no ultimo ano
 btc = [778, 774, 776, 781, 788, 788, 789, 793, 824, 860, 901, 891, 886, 897, 930, 967, 963, 952, 959, 997, 1015, 1023,
        1126, 994, 883, 896, 908, 894, 906, 785, 803, 826, 817, 822, 830, 903, 874, 895, 893, 920, 918, 922, 890, 893,
        915, 919, 920, 915, 921, 964, 979, 1007, 1013, 1030, 1014, 1024, 1050, 1052, 976, 999, 1008, 1000, 999, 1011,
@@ -26,7 +27,7 @@ btc = [778, 774, 776, 781, 788, 788, 789, 793, 824, 860, 901, 891, 886, 897, 930
 
 
 
-
+#define a funcao de potencia
 def func(x, a, b ,c ,z ,  z2,   tc ,w ,p ):
     if (tc < 0): return 0.0 * x
     #return a + b * pow(( 370+tc-x),z) + c * pow(( 370+tc-x),z) * np.cos( np.log((370 + tc-x)) + p  )
@@ -38,7 +39,7 @@ xdata = np.array(list(range(-len(btc),0)))
 ydata = (np.log(np.array(btc)) )
 #print( np.array([xdata,ydata]) )
 
-
+#ajusta a curva
 popt, pcov = curve_fit(func, xdata, ydata  )
 
 print(popt)
@@ -48,5 +49,5 @@ print(popt)
 plt.plot(xdata,   ( ydata), 'b-', label='data')
 
 plt.plot(xdata,  func(xdata, *popt), 'r-', label='fit')
-
+#exibe na tela
 plt.show()
